@@ -407,7 +407,7 @@ class Metar(object):
           raise err
       if self._unparsed_groups:
           code = ' '.join(self._unparsed_groups)
-          raise ParserError("Unparsed groups in body '"+code+"' while processing '"+metarcode+"'")
+#          raise ParserError("Unparsed groups in body '"+code+"' while processing '"+metarcode+"'")
 
   def _do_trend_handlers(self, code):
       for pattern, handler, repeatable in Metar.trend_handlers:
@@ -1098,12 +1098,24 @@ class Metar(object):
       """
       return self._weather( self.weather )
 
+  def present_weatherraw( self ):
+      """
+      Return raw of the present weather.
+      """
+      return self._weatherraw( self.weather )
+
   def recent_weather( self ):
       """
       Return a textual description of the recent weather.
       """
       return self._weather( self.recent )
   
+  def _weatherraw( self, weather ):
+      """
+      Return raw weather.
+      """
+      return weather
+
   def _weather( self, weather ):
       """
       Return a textual description of weather.
@@ -1187,4 +1199,3 @@ class Metar(object):
       Return the decoded remarks.
       """
       return sep.join(self._remarks)
-
