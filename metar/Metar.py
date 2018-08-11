@@ -427,8 +427,7 @@ class Metar(object):
 
       if self._unparsed_groups:
           code = ' '.join(self._unparsed_groups)
-#          raise ParserError("Unparsed groups in body '"+code+"' while processing '"+metarcode+"'")
-#          message = "Unparsed groups in body '%s' while processing '%s'" % (code, metarcode)
+          message = "Unparsed groups in body '%s' while processing '%s'" % (code, metarcode)
 #          if strict:
 #              raise ParserError(message)
 #          else:
