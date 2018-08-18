@@ -4,6 +4,7 @@
 # Usage: python setup.py install
 #
 from setuptools import setup
+from metar import __version__
 
 DESCRIPTION="Metar - a package to parse METAR-coded weather reports"
 
@@ -28,7 +29,7 @@ in international reports are accepted."""
 
 setup(
     name="metar",
-    version="1.5.0",
+    version=__version__,
     author="Tom Pollard",
     author_email="pollard@alum.mit.edu",
     url="http://github.com/tomp/python-metar",
@@ -36,6 +37,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     license="MIT",
     packages=["metar"],
+    package_data={'metar': ['nsd_cccc.txt', ]},
     platforms="Python 2.5 and later.",
     classifiers=[
         "Development Status :: 5 - Production/Stable",

@@ -1,5 +1,6 @@
 import unittest
 import warnings
+from datetime import datetime, timedelta
 
 from metar import Metar
 
@@ -8,14 +9,24 @@ sta_time = "KEWR 101651Z "
 sta_time_mod = "KEWR 101651Z AUTO "
 sta_time_wind = "KEWR 101651Z 00000KT "
 
-from datetime import datetime, timedelta
 today = datetime.utcnow()
 tomorrow = today + timedelta(days=1)
 
-class MetarTest(unittest.TestCase):
 
+class MetarTest(unittest.TestCase):
   def raisesParserError(self, code):
     self.assertRaises(Metar.ParserError, Metar.Metar, code )
+
+  def test_issue40_runwayunits(self):
+    """Check reported units on runway visual range."""
+    report = Metar.Metar(
+      "METAR KPIT 091955Z COR 22015G25KT 3/4SM R28L/2600FT TSRA OVC010CB "
+      "18/16 A2992 RMK SLP045 T01820159"
+    )
+    res = report.runway_visual_range()
+    self.assertEquals(res, 'on runway 28L, 2600 feet')
+    res = report.runway_visual_range('M')
+    self.assertTrue(res, 'on runway 28L, 792 meters')
 
   def test_010_parseType_default(self):
     """Check default value of the report type."""
@@ -149,7 +160,6 @@ class MetarTest(unittest.TestCase):
 
   def test_043_parseModifier_illegal(self):
     """Check rejection of illegal 'modifier' groups."""
-#    self.raisesParserError( "KEWR AUTO" )
     self.raisesParserError( sta_time+"auto" )
     self.raisesParserError( sta_time+"CCH" )
     self.raisesParserError( sta_time+"MAN" )
@@ -446,6 +456,9 @@ class MetarTest(unittest.TestCase):
     self.assertEqual( report('SCT030').sky_conditions(), 'scattered clouds at 3000 feet' )
     self.assertEqual( report('BKN001').sky_conditions(), 'broken clouds at 100 feet' )
     self.assertEqual( report('OVC008').sky_conditions(), 'overcast at 800 feet' )
+    self.assertEqual(
+      report('OVC010CB').sky_conditions(), 'overcast cumulonimbus at 1000 feet'
+    )
     self.assertEqual( report('SCT020TCU').sky_conditions(), 'scattered towering cumulus at 2000 feet' )
     self.assertEqual( report('BKN015CB').sky_conditions(), 'broken cumulonimbus at 1500 feet' )
     self.assertEqual( report('FEW030').sky_conditions(), 'a few clouds at 3000 feet' )
@@ -475,5 +488,4 @@ class MetarTest(unittest.TestCase):
 
 
 if __name__=='__main__':
-  unittest.main( )
-
+  unittest.main()
