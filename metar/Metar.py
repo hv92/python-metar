@@ -323,7 +323,7 @@ class Metar(object):
     """METAR (aviation meteorology report)"""
 
     def __init__(self, metarcode, month=None, year=None, utcdelta=None,
-                 strict=True):
+                 strict=False):
         """
         Parse raw METAR code.
 
