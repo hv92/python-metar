@@ -452,18 +452,18 @@ class Metar(object):
                 ("%s failed while processing '%s'\n\t%s"
                  ) % (handler.__name__, code, "\n\t".join(err.args))
             )
-            if strict:
-                raise ParserError(message)
-            else:
-                warnings.warn(message, RuntimeWarning)
+#            if strict:
+#                raise ParserError(message)
+#            else:
+#                warnings.warn(message, RuntimeWarning)
 
         if self._unparsed_groups:
             code = ' '.join(self._unparsed_groups)
             message = "Unparsed groups in body '%s' while processing '%s'" % (code, metarcode)
-            if strict:
-                raise ParserError(message)
-            else:
-                warnings.warn(message, RuntimeWarning)
+#            if strict:
+#                raise ParserError(message)
+#            else:
+#                warnings.warn(message, RuntimeWarning)
 
     @property
     def decode_completed(self):
